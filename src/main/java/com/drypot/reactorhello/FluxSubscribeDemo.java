@@ -4,7 +4,7 @@ import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 
-public class FluxExample1 {
+public class FluxSubscribeDemo {
 
     public static void main(String[] args) {
         runSampleSubscriber2();
@@ -112,4 +112,6 @@ public class FluxExample1 {
         });
         System.out.println("aaa");
     }
+
 }
+
