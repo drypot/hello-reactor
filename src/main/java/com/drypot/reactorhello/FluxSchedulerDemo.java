@@ -8,7 +8,7 @@ import reactor.core.scheduler.Schedulers;
 public class FluxSchedulerDemo {
 
     public static void main(String[] args) throws InterruptedException {
-        runPublishOnDemo();
+        runSubscribeOnDemo();
     }
 
     private static void runMono1() throws InterruptedException {
@@ -51,6 +51,32 @@ public class FluxSchedulerDemo {
             flux.subscribe((r) -> {
                 printThreadName("d: " + r);
             });
+        }).start();
+    }
+
+    private static void runSubscribeOnDemo() throws InterruptedException {
+        Scheduler s = Schedulers.newParallel("parallel-scheduler", 4);
+
+        final Flux<Integer> flux = Flux
+            .range(1, 4)
+            .map(i -> {
+                printThreadName("a: " + i);
+                return i;
+            })
+            .subscribeOn(s)
+            .map(i -> {
+                printThreadName("b: " + i);
+                return i;
+            });
+
+        printThreadName("s: ");
+
+        new Thread(() -> {
+            printThreadName("c: 1");
+            flux.subscribe((r) -> {
+                printThreadName("d: " + r);
+            });
+            printThreadName("c: 2");
         }).start();
     }
 
